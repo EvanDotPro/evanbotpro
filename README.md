@@ -51,3 +51,6 @@ I'm currently in the process of porting over all of the existing evanbotpro func
 -- **The plugin API is subject to change.**
 -- **Currently values are reloaded from the `.env` file every time a message is received by the bot. This means if you save your `.env` file with bad values or syntax, you can crash the bot.**
 
+### License
+
+My bot is available under the MIT license. Basically, you can use this code for fun, profit, or whatever you want as long as you retain the original license + copyright notice in the [LICENSE](./LICENSE) file and don't try to pass it off as your own or hide that the code came from here.
