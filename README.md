@@ -48,8 +48,8 @@ I'm currently in the process of porting over all of the existing evanbotpro func
 
 ### Warnings
 
--- **The plugin API is subject to change.**
--- **Currently values are reloaded from the `.env` file every time a message is received by the bot. This means if you save your `.env` file with bad values or syntax, you can crash the bot.**
+- **The plugin API is subject to change.**
+- **Currently values are reloaded from the `.env` file every time a message is received by the bot. This means if you save your `.env` file with bad values or syntax, you can crash the bot.**
 
 ### License
 
