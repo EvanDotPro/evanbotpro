@@ -2,8 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const PluginInterface = require('./pluginInterface');
 const centralEventEmitter = require('./eventEmitter');
+const redis = require('redis');
 
-let plugins = {};
+
+var redisClient = redis.createClient();
+(async () => {
+  redisClient.on('error', (err) => console.log('Redis Client Error', err));
+  await redisClient.connect();
+})();
+
+var plugins = {};
 
 async function loadPlugin(pluginName, pluginPath) {
   // Let plugins clean themselves up
@@ -23,7 +31,7 @@ async function loadPlugin(pluginName, pluginPath) {
     throw new Error(`The plugin '${pluginName}' does not implement the PluginInterface`);
   }
 
-  let pluginInstance = new pluginClass(pluginName, pluginPath, loadPluginsFromDirectory, centralEventEmitter);
+  let pluginInstance = new pluginClass(pluginName, pluginPath, loadPluginsFromDirectory, centralEventEmitter, redisClient);
 
   // Store the plugin in memory
   plugins[pluginName] = pluginInstance;

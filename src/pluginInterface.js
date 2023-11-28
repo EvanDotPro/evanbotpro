@@ -1,5 +1,5 @@
 class PluginInterface {
-  constructor(pluginName, pluginPath, loadPluginsFromDirectory, centralEventEmitter) {
+  constructor(pluginName, pluginPath, loadPluginsFromDirectory, centralEventEmitter, redis) {
     if (this.constructor === PluginInterface) {
       throw new Error("Abstract classes can't be instantiated.");
     }
@@ -10,6 +10,7 @@ class PluginInterface {
     this.__path = pluginPath;
     this.__loadPluginsFromDirectory = loadPluginsFromDirectory.bind(this);
     this.__centralEventEmitter = centralEventEmitter;
+    this.__redis = redis;
     this.init();
   }
 
