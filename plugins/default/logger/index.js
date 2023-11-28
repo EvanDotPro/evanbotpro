@@ -1,8 +1,16 @@
 const PluginInterface = require('../../../src/pluginInterface');
 
 class LoggerPlugin extends PluginInterface {
-  onMessage(channel, tags, message, plugins) {
-    console.log(`Received message on channel ${channel} with tags ${JSON.stringify(tags)}: ${message}`);
+  init() {
+    this.__centralEventEmitter.on('messageReceived', this.onMessage);
+  }
+
+  onMessage(msg) {
+    console.log(`Received ${msg.platform} message: ${JSON.stringify(msg)}`);
+  }
+
+  unload() {
+    this.__centralEventEmitter.removeListener('messageReceived', this.onMessage);
   }
 }
 

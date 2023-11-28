@@ -1,10 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 const PluginInterface = require('./pluginInterface');
+const centralEventEmitter = require('./eventEmitter');
 
 let plugins = {};
 
-function loadPlugin(pluginName, pluginPath) {
+async function loadPlugin(pluginName, pluginPath) {
+  // Let plugins clean themselves up
+  let oldPluginInstance = plugins[pluginName];
+  if (oldPluginInstance && oldPluginInstance instanceof PluginInterface) {
+    await oldPluginInstance.unload();
+  }
+
   // Delete the cached module, if it exists
   delete require.cache[require.resolve(pluginPath)];
 
@@ -16,7 +23,7 @@ function loadPlugin(pluginName, pluginPath) {
     throw new Error(`The plugin '${pluginName}' does not implement the PluginInterface`);
   }
 
-  let pluginInstance = new pluginClass(pluginName, pluginPath, loadPluginsFromDirectory);
+  let pluginInstance = new pluginClass(pluginName, pluginPath, loadPluginsFromDirectory, centralEventEmitter);
 
   // Store the plugin in memory
   plugins[pluginName] = pluginInstance;
