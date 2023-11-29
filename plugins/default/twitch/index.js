@@ -27,29 +27,39 @@ class TwitchPlugin extends PluginInterface {
       var command = args.shift().toLowerCase();
 
       if (command === 'join' && channel === botChan) {
-        var isJoined = await this.__redis.SADD('ebp:' + process.env.TWITCH_USERNAME + ':twitch-channels', tags.username);
+        var chanToJoin = tags.username;
+        if (tags.username === process.env.TWITCH_ADMIN.toLowerCase() && args.length === 1) {
+          chanToJoin = args[0].replace('#','').replace('@','').toLowerCase();
+        }
+
+        var isJoined = await this.__redis.SADD('ebp:' + process.env.TWITCH_USERNAME + ':twitch-channels', chanToJoin);
         if (!isJoined) {
-          this.twitchClient.say(botChan, `[v2] I'm already in your channel, @${tags.username}. Twitch has me shadowbanned though, so you might need to VIP or mod me.`);
+          this.twitchClient.say(botChan, `[v2] I'm already in @${chanToJoin}'s channel. Twitch has me shadowbanned though, so I might need to be VIP or mod.`);
           return;
         }
         this.twitchClient.join(tags.username);
-        this.twitchClient.say(botChan, `[v2] Okay, I've joined your channel, @${tags.username}.`);
+        this.twitchClient.say(botChan, `[v2] Okay, I've joined @${chanToJoin}'s channel.`);
         return;
       }
 
       if (command === 'leave' && channel === botChan) {
-        var isRemoved = await this.__redis.SREM('ebp:' + process.env.TWITCH_USERNAME + ':twitch-channels', tags.username);
+        var chanToLeave = tags.username;
+        if (tags.username === process.env.TWITCH_ADMIN.toLowerCase() && args.length === 1) {
+          chanToLeave = args[0].replace('#','').replace('@','').toLowerCase();
+        }
+
+        var isRemoved = await this.__redis.SREM('ebp:' + process.env.TWITCH_USERNAME + ':twitch-channels', chanToLeave);
         if (!isRemoved) {
-          this.twitchClient.say(botChan, `[v2] I'm not in your channel, @${tags.username}.`);
+          this.twitchClient.say(botChan, `[v2] I'm not in @${chanToLeave}'s channel.`);
           return;
         }
-        this.twitchClient.join(tags.username);
-        this.twitchClient.say(botChan, `[v2] Okay, I've left your channel, @${tags.username}.`);
+        this.twitchClient.part(chanToLeave);
+        this.twitchClient.say(botChan, `[v2] Okay, I've left @${chanToLeave}'s channel.`);
         return;
       }
 
       if (command === 'v2test') {
-        this.twitchClient.say(channel, 'This is evanbotpro v2 speaking.');
+        this.twitchClient.say(channel, 'This is EBP v2 speaking.');
         return;
       }
 

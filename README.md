@@ -18,29 +18,27 @@ So, this is just a bot I built for myself and some Twitch friends. A lot of peop
 ### Environment Variables (.env)
 
 - **PLUGIN_PATHS** - List of paths to load plugins from, separated by semi-colons, relative to the path you run `app.js` from. E.g. `PLUGIN_PATHS="./plugins/default;./plugins/custom"`.
-- **TWITCH_CHANNELS** - List of Twitch channels for the bot to join, separated by semi-colons. This is temporary, the list is going to be stored in Redis and dynamic.
+- **TWITCH_TOKEN** - Twitch access token for your bot.
+- **TWITCH_USERNAME** - Twitch username of your bot.
+- **TWITCH_ADMIN** - Twitch username who can add/remove bot from others' channels.
+
+### Joining / Leaving Twitch Channels
+
+When you first run the bot, it will only join its own Twitch chat. Each user that wants the bot in their own channel must go into the bot's chat and type `!join`.
+
+If you no longer want the bot in your channel, go into the bot's chat and type `!leave`.
+
+The Twitch user you set as `TWITCH_ADMIN` in `.env` may specify a channel name (i.e. `!join somechannel` or `!leave somechannel`).
 
 ### Creating a Plugin
 
-Create `./plugins/custom/helloworld/index.js`:
-
-```
-const PluginInterface = require('../../../src/pluginInterface');
-
-class HelloWorld extends PluginInterface {
-  onMessage(channel, tags, message, plugins) {
-    console.log(`Hello world! This plugin has received a message on channel ${channel} with tags ${JSON.stringify(tags)}: ${message}`);
-  }
-}
-
-module.exports = HelloWorld;
-```
-
-You can also check out `./plugins/default` for more examples.
+See the examples in the `./plugins` directory.
 
 ### Reloading Plugins
 
 If you're working on a plugin and want a change to take effect without restarting the bot, the bot MUST be in your Twitch channel, and you must be logged in as your Twitch user. If you've done that, you should just be able to type `!reloadplugins` in your own chat and you'll see the plugins reload in the console.
+
+More to come on this soon. Plan to make it so each person can control which plugins are enabled for their channel and some other stuff.
 
 ### Project Status
 
