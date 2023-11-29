@@ -9,11 +9,12 @@ So, this is just a bot I built for myself and some Twitch friends. A lot of peop
 
 ### Installation
 
-- Install node.js.
+- Install node.js and npm.
 - Install and start redis.
 - Clone this repository.
-- Copy `.env-default` to `.env` and set the appropriate values.
-- Run `node ./app.js`
+- Copy `.env-default` to `.env` and set the appropriate values (see below).
+- Run `npm install` to install the dependencies.
+- Run `node ./app.js` to start the bot.
 
 ### Environment Variables (.env)
 
