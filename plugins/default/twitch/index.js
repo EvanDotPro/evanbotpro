@@ -4,7 +4,7 @@ const PluginInterface = require('../../../src/pluginInterface');
 class TwitchPlugin extends PluginInterface {
   init() {
     this.twitchClient = new tmiClient({
-     options: { debug: true },
+     options: { debug: false },
       identity: {
         username: process.env.TWITCH_USERNAME,
         password: 'oauth:' + process.env.TWITCH_TOKEN
@@ -65,8 +65,10 @@ class TwitchPlugin extends PluginInterface {
 
       this.__centralEventEmitter.emit('messageReceived', {
         platform: 'twitch',
+        channel: channel,
         username: tags['display-name'],
-        message: message
+        message: message,
+        twitchClient: this.twitchClient
       });
     });
   }
