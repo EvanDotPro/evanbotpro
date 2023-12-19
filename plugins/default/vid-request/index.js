@@ -1,6 +1,5 @@
 const PluginInterface = require('../../../src/pluginInterface');
 const yts = require( 'yt-search' );
-const ytext = require('youtube-ext');
 
 class VidRequestPlugin extends PluginInterface {
   init() {
