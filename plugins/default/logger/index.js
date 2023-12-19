@@ -6,7 +6,7 @@ class LoggerPlugin extends PluginInterface {
   }
 
   onMessage(msg) {
-    console.log(`Received ${msg.platform} message: ${JSON.stringify(msg)}`);
+    //console.log(`Received ${msg.platform} message: ${JSON.stringify(msg)}`);
   }
 
   unload() {

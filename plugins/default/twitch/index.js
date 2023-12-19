@@ -23,8 +23,8 @@ class TwitchPlugin extends PluginInterface {
 
     this.twitchClient.on('message', async (channel, tags, message, self) => {
       var botChan = '#' + process.env.TWITCH_USERNAME;
-      var args    = message.slice(1).split(' ');
-      var command = args.shift().toLowerCase();
+      var args    = message.charAt(0) === '!' ? message.slice(1).split(' ') : [];
+      var command = message.charAt(0) === '!' ? args.shift().toLowerCase() : false;
 
       if (command === 'join' && channel === botChan) {
         var chanToJoin = tags.username;
@@ -66,8 +66,12 @@ class TwitchPlugin extends PluginInterface {
       this.__centralEventEmitter.emit('messageReceived', {
         platform: 'twitch',
         channel: channel,
+        chanClean: channel.replace('#', ''),
         username: tags['display-name'],
         message: message,
+        command: command,
+        args: args,
+        allArgs: args.join(' '),
         twitchClient: this.twitchClient
       });
     });
