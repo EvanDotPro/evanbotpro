@@ -29,7 +29,12 @@ class DictionaryPlugin extends PluginInterface {
 
     if (command === 'define' && args.length > 0) {
       var defResponse = await doRequest(`https://api.dictionaryapi.dev/api/v2/entries/en/${args[0]}`);
-      var responseText = `${defResponse[0]['word']} (${defResponse[0]['meanings'][0]['partOfSpeech']}) ${defResponse[0]['phonetic']} - ${defResponse[0]['meanings'][0]['definitions'][0]['definition']}`;
+      if (defResponse.title === 'No Definitions Found') {
+        var responseText = `The dictionary plugin source (dictionaryapi.com) does not have an entry for '${args[0]}'.`;
+      } else {
+        console.log(defResponse);
+        var responseText = `${defResponse[0]['word']} (${defResponse[0]['meanings'][0]['partOfSpeech']}) ${defResponse[0]['phonetic'] || ''} - ${defResponse[0]['meanings'][0]['definitions'][0]['definition']}`;
+      }
       msg.twitchClient.say(msg.channel, `${responseText}`);
       return;
     }
